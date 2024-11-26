@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=3 uid="uid://dmov5vfevd1w6"]
+[gd_scene load_steps=53 format=3 uid="uid://dmov5vfevd1w6"]
 
 [ext_resource type="Script" path="res://Scripts/Player.cs" id="1_ngy7s"]
 [ext_resource type="Texture2D" uid="uid://b45jc32ixt8ji" path="res://Character/Idle/Idle-Sheet.png" id="1_uwyos"]
@@ -339,6 +339,13 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xo2re"]
 size = Vector2(14, 44)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rqrhf"]
+bg_color = Color(1, 0, 0, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
 [node name="Player" type="CharacterBody2D"]
 z_index = 5
 collision_layer = 3
@@ -347,11 +354,18 @@ script = ExtResource("1_ngy7s")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(1, -24)
 sprite_frames = SubResource("SpriteFrames_uhmgm")
-animation = &"die"
+animation = &"idle"
 autoplay = "idle"
-frame = 7
-frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(2, -27)
 shape = SubResource("RectangleShape2D_xo2re")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+offset_left = -19.0
+offset_top = -58.0
+offset_right = 19.0
+offset_bottom = -51.0
+theme_override_font_sizes/font_size = 15
+theme_override_styles/fill = SubResource("StyleBoxFlat_rqrhf")
+show_percentage = false

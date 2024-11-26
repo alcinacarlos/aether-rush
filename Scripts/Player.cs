@@ -24,12 +24,24 @@ public partial class Player : CharacterBody2D
 	private Timer knockbackTimer;
 
 	public AnimatedSprite2D animatedSprite2D;
+	public ProgressBar healthBar;
 
 	private bool isDead = false;
+
+	private Timer hideHealthBarTimer;
 
 	public override void _Ready()
 	{
 		currentHealth = MaxHealth;
+		healthBar = GetNode<ProgressBar>("ProgressBar");
+		healthBar.MaxValue = MaxHealth;
+		healthBar.Value = MaxHealth;
+		healthBar.Visible = false;
+		hideHealthBarTimer = new Timer();
+    	hideHealthBarTimer.OneShot = true;
+    	hideHealthBarTimer.Timeout += HideHealthBar;
+    	AddChild(hideHealthBarTimer);
+
 		knockbackTimer = new Timer();
 		AddChild(knockbackTimer);
 		knockbackTimer.OneShot = true;
@@ -39,7 +51,10 @@ public partial class Player : CharacterBody2D
 	public void TakeDamage(int damage, Vector2 knockbackDirection)
 	{
 		currentHealth -= damage;
-		GD.Print($"Health: {currentHealth}");
+		healthBar.Value = currentHealth;
+    	healthBar.Visible = true;
+		hideHealthBarTimer.Stop();
+    	hideHealthBarTimer.Start(2.0f);
 
 		// Aplicar el empuje
 		isKnockedBack = true;
@@ -58,6 +73,7 @@ public partial class Player : CharacterBody2D
 		animatedSprite2D.Play("die");
 		GetTree().CreateTimer(2.5f).Timeout += () =>
 		{
+			GameManager.Instance.reset_money();
 			GetTree().ReloadCurrentScene();
 		};
 	}
@@ -133,5 +149,10 @@ public partial class Player : CharacterBody2D
 
 		Velocity = velocity;
 		MoveAndSlide();
+	}
+
+	private void HideHealthBar()
+	{
+		healthBar.Visible = false;
 	}
 }

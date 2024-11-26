@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=4 uid="uid://ng5so3puowcr"]
+[gd_scene load_steps=26 format=4 uid="uid://ng5so3puowcr"]
 
 [ext_resource type="Texture2D" uid="uid://sdchxsrvfow" path="res://Background/Background.png" id="1_3hai2"]
 [ext_resource type="PackedScene" uid="uid://dmov5vfevd1w6" path="res://Scenes/player.tscn" id="1_pw8vv"]
@@ -10,6 +10,8 @@
 [ext_resource type="PackedScene" uid="uid://do0qkajxipps7" path="res://Scenes/Pelotes/pelote_oro.tscn" id="4_wfa1a"]
 [ext_resource type="PackedScene" uid="uid://5ooqnn3nx4ix" path="res://Scenes/killzone.tscn" id="5_4v45q"]
 [ext_resource type="PackedScene" uid="uid://dy324avvp6k0b" path="res://Scenes/enemy_1.tscn" id="7_gobhh"]
+[ext_resource type="PackedScene" uid="uid://c6mk8svx1udtd" path="res://Scenes/Pelotes/pelote_bronze.tscn" id="11_ar0v6"]
+[ext_resource type="PackedScene" uid="uid://c6sjswlby1atb" path="res://Scenes/Pelotes/pelote_plata.tscn" id="12_p1aw2"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3klos"]
 texture = ExtResource("1_3hai2")
@@ -4435,7 +4437,7 @@ libraries = {
 autoplay = "move"
 
 [node name="PeloteOro" parent="." instance=ExtResource("4_wfa1a")]
-position = Vector2(42, -49)
+position = Vector2(190, -36)
 
 [node name="Killzone" parent="." instance=ExtResource("5_4v45q")]
 position = Vector2(-109, 171)
@@ -4444,4 +4446,16 @@ position = Vector2(-109, 171)
 shape = SubResource("WorldBoundaryShape2D_um42p")
 
 [node name="Enemy_2" parent="." instance=ExtResource("7_gobhh")]
-position = Vector2(95, -22)
+position = Vector2(617, -18)
+
+[node name="PeloteBronze" parent="." instance=ExtResource("11_ar0v6")]
+position = Vector2(212, -36)
+
+[node name="PelotePlata" parent="." instance=ExtResource("12_p1aw2")]
+position = Vector2(232, -36)
+
+[node name="PeloteBronze2" parent="." instance=ExtResource("11_ar0v6")]
+position = Vector2(253, -36)
+
+[node name="PeloteOro2" parent="." instance=ExtResource("4_wfa1a")]
+position = Vector2(272, -35)

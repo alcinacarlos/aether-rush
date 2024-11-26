@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class Enemy : Node2D
+public partial class Enemy : Area2D
 {
     [Export]
     public int Speed = 60;

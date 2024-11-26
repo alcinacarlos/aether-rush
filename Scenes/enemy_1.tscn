@@ -41,9 +41,8 @@ animations = [{
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6ykn5"]
 
-[node name="Enemy_1" type="Node2D"]
+[node name="Enemy_1" type="Area2D"]
 script = ExtResource("1_ipium")
-Damage = 100
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_j3gr5")
