@@ -1,8 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://dy324avvp6k0b"]
+[gd_scene load_steps=9 format=3 uid="uid://dy324avvp6k0b"]
 
 [ext_resource type="Script" path="res://Scripts/Enemy.cs" id="1_ipium"]
 [ext_resource type="Texture2D" uid="uid://b6u7lvc730qfy" path="res://Mob/Boar/Idle/Idle-Sheet-export-Back.png" id="1_q753j"]
-[ext_resource type="PackedScene" uid="uid://5ooqnn3nx4ix" path="res://Scenes/killzone.tscn" id="2_a8v4u"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lludw"]
 atlas = ExtResource("1_q753j")
@@ -40,27 +39,25 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_d55je"]
-size = Vector2(18, 17)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6ykn5"]
 
 [node name="Enemy_1" type="Node2D"]
 script = ExtResource("1_ipium")
+Damage = 100
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_j3gr5")
 autoplay = "default"
 frame_progress = 0.963345
 
-[node name="Killzone" parent="AnimatedSprite2D" instance=ExtResource("2_a8v4u")]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite2D/Killzone"]
-position = Vector2(-2, 6.5)
-shape = SubResource("RectangleShape2D_d55je")
-
 [node name="RayCastRight" type="RayCast2D" parent="."]
 position = Vector2(7, 3)
-target_position = Vector2(18, 0)
+target_position = Vector2(9, 0)
 
 [node name="RayCastLeft" type="RayCast2D" parent="."]
 position = Vector2(-11, 4)
-target_position = Vector2(-21, 0)
+target_position = Vector2(-11, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, 5)
+shape = SubResource("RectangleShape2D_6ykn5")
