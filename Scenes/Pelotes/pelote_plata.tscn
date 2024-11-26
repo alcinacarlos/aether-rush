@@ -1,0 +1,77 @@
+[gd_scene load_steps=12 format=3 uid="uid://c6sjswlby1atb"]
+
+[ext_resource type="Script" path="res://Scripts/Pelotes.cs" id="1_2wli4"]
+[ext_resource type="Texture2D" uid="uid://3nq01548ylvs" path="res://Assets/pelotes.png" id="1_36mlx"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kmjgu"]
+atlas = ExtResource("1_36mlx")
+region = Rect2(0, 36, 18, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xnrn0"]
+atlas = ExtResource("1_36mlx")
+region = Rect2(18, 36, 18, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_easwp"]
+atlas = ExtResource("1_36mlx")
+region = Rect2(36, 36, 18, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jgfyr"]
+atlas = ExtResource("1_36mlx")
+region = Rect2(54, 36, 18, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_svat6"]
+atlas = ExtResource("1_36mlx")
+region = Rect2(72, 36, 18, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gqhpk"]
+atlas = ExtResource("1_36mlx")
+region = Rect2(90, 36, 18, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4ib6u"]
+atlas = ExtResource("1_36mlx")
+region = Rect2(108, 36, 18, 18)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_50blk"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kmjgu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xnrn0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_easwp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jgfyr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_svat6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gqhpk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4ib6u")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_i0dsn"]
+radius = 8.0
+
+[node name="PelotePlata" type="Area2D"]
+script = ExtResource("1_2wli4")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_50blk")
+autoplay = "default"
+frame_progress = 0.24999
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_i0dsn")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
