@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=4 uid="uid://ng5so3puowcr"]
+[gd_scene load_steps=27 format=4 uid="uid://ng5so3puowcr"]
 
 [ext_resource type="Texture2D" uid="uid://sdchxsrvfow" path="res://Background/Background.png" id="1_3hai2"]
 [ext_resource type="PackedScene" uid="uid://dmov5vfevd1w6" path="res://Scenes/player.tscn" id="1_pw8vv"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://dy324avvp6k0b" path="res://Scenes/enemy_1.tscn" id="7_gobhh"]
 [ext_resource type="PackedScene" uid="uid://c6mk8svx1udtd" path="res://Scenes/Pelotes/pelote_bronze.tscn" id="11_ar0v6"]
 [ext_resource type="PackedScene" uid="uid://c6sjswlby1atb" path="res://Scenes/Pelotes/pelote_plata.tscn" id="12_p1aw2"]
+[ext_resource type="PackedScene" uid="uid://1pq07bk2yh83" path="res://Scenes/canvas_layer.tscn" id="13_wor25"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3klos"]
 texture = ExtResource("1_3hai2")
@@ -4459,3 +4460,5 @@ position = Vector2(253, -36)
 
 [node name="PeloteOro2" parent="." instance=ExtResource("4_wfa1a")]
 position = Vector2(272, -35)
+
+[node name="CanvasLayer" parent="." instance=ExtResource("13_wor25")]

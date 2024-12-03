@@ -3,12 +3,12 @@ using System;
 
 public partial class GameManager : Node
 {
-	[Export]
-	public int Money = 0;
+    [Export]
+    public int Money = 0;
 
-	public static GameManager Instance;
+    public static GameManager Instance;
 
-	    public override void _Ready()
+    public override void _Ready()
     {
         if (Instance == null)
         {
@@ -20,11 +20,13 @@ public partial class GameManager : Node
         }
     }
 
-	public void add_money(int money){
-		Money += money;
+    public void add_money(int money)
+    {
+        Money += money;
         GD.Print(Money);
-	}
-    public void reset_money(){
-		Money = 0;
-	}
+    }
+    public void reset_money()
+    {
+        Money = 0;
+    }
 }

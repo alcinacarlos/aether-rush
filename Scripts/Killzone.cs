@@ -14,6 +14,7 @@ public partial class Killzone : Area2D
 
 	public void _on_timer_timeout(){
 		Engine.TimeScale = 1;
+		GameManager.Instance.reset_money();
 		GetTree().ReloadCurrentScene();
 	}
 }

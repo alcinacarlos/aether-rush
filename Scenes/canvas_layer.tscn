@@ -1,0 +1,92 @@
+[gd_scene load_steps=12 format=3 uid="uid://1pq07bk2yh83"]
+
+[ext_resource type="Texture2D" uid="uid://3nq01548ylvs" path="res://Assets/pelotes.png" id="1_ixbac"]
+[ext_resource type="Script" path="res://Scripts/HUD.cs" id="1_tbjtu"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5msep"]
+atlas = ExtResource("1_ixbac")
+region = Rect2(0, 0, 18, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n3u82"]
+atlas = ExtResource("1_ixbac")
+region = Rect2(18, 0, 18, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q08aw"]
+atlas = ExtResource("1_ixbac")
+region = Rect2(36, 0, 18, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghyg0"]
+atlas = ExtResource("1_ixbac")
+region = Rect2(54, 0, 18, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jru6e"]
+atlas = ExtResource("1_ixbac")
+region = Rect2(72, 0, 18, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4obo3"]
+atlas = ExtResource("1_ixbac")
+region = Rect2(90, 0, 18, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g2qpj"]
+atlas = ExtResource("1_ixbac")
+region = Rect2(108, 0, 18, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fecqe"]
+atlas = ExtResource("1_ixbac")
+region = Rect2(0, 0, 18, 18)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_aidev"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5msep")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n3u82")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q08aw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghyg0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jru6e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4obo3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g2qpj")
+}],
+"loop": true,
+"name": &"collect",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fecqe")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+script = ExtResource("1_tbjtu")
+
+[node name="CoinCountLabel" type="Label" parent="."]
+offset_left = 101.0
+offset_top = 28.0
+offset_right = 141.0
+offset_bottom = 70.0
+theme_override_font_sizes/font_size = 30
+text = "0"
+
+[node name="CoinSprite" type="AnimatedSprite2D" parent="."]
+position = Vector2(56, 51)
+scale = Vector2(3.44444, 3.44444)
+sprite_frames = SubResource("SpriteFrames_aidev")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.138985

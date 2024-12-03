@@ -71,7 +71,7 @@ public partial class Player : CharacterBody2D
 	{
 		isDead = true;
 		animatedSprite2D.Play("die");
-		GetTree().CreateTimer(2.5f).Timeout += () =>
+		GetTree().CreateTimer(2.0f).Timeout += () =>
 		{
 			GameManager.Instance.reset_money();
 			GetTree().ReloadCurrentScene();
