@@ -131,6 +131,7 @@ corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 
 [node name="Enemy_1" type="CharacterBody2D"]
+z_index = 1
 script = ExtResource("1_ipium")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
