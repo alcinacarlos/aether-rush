@@ -1,0 +1,152 @@
+[gd_scene load_steps=20 format=3 uid="uid://cxgu34p4rce3d"]
+
+[ext_resource type="Script" path="res://Scripts/Enemy.cs" id="1_6u3ps"]
+[ext_resource type="Texture2D" uid="uid://cg3mwmx6mmqcv" path="res://Mob/Small Bee/Hit/Hit-Sheet.png" id="2_7lpgf"]
+[ext_resource type="Texture2D" uid="uid://b6u7lvc730qfy" path="res://Mob/Boar/Idle/Idle-Sheet-export-Back.png" id="3_dsb4i"]
+[ext_resource type="Texture2D" uid="uid://uytdfdd2l3bj" path="res://Mob/Small Bee/Fly/Fly-Sheet.png" id="4_4orgk"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ihutl"]
+atlas = ExtResource("2_7lpgf")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_isjq2"]
+atlas = ExtResource("2_7lpgf")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u0nhj"]
+atlas = ExtResource("2_7lpgf")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kvqvd"]
+atlas = ExtResource("2_7lpgf")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lludw"]
+atlas = ExtResource("3_dsb4i")
+region = Rect2(0, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_27m02"]
+atlas = ExtResource("3_dsb4i")
+region = Rect2(48, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_poowp"]
+atlas = ExtResource("3_dsb4i")
+region = Rect2(96, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_807v7"]
+atlas = ExtResource("3_dsb4i")
+region = Rect2(144, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_scwu2"]
+atlas = ExtResource("4_4orgk")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wxet7"]
+atlas = ExtResource("4_4orgk")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ce4um"]
+atlas = ExtResource("4_4orgk")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b3abk"]
+atlas = ExtResource("4_4orgk")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_j3gr5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ihutl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_isjq2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u0nhj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kvqvd")
+}],
+"loop": true,
+"name": &"die",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lludw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_27m02")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_poowp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_807v7")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_scwu2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wxet7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ce4um")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b3abk")
+}],
+"loop": true,
+"name": &"run",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6ykn5"]
+size = Vector2(15, 19)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dguyl"]
+bg_color = Color(1, 0, 0, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[node name="Enemy_1" type="CharacterBody2D"]
+z_index = 1
+script = ExtResource("1_6u3ps")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-1, -17)
+sprite_frames = SubResource("SpriteFrames_j3gr5")
+animation = &"die"
+autoplay = "run"
+frame_progress = 0.755002
+
+[node name="RayCastRight" type="RayCast2D" parent="."]
+position = Vector2(0, -12)
+target_position = Vector2(11, 0)
+collision_mask = 5
+
+[node name="RayCastLeft" type="RayCast2D" parent="."]
+position = Vector2(-2, -12)
+target_position = Vector2(-9, 0)
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, -14)
+shape = SubResource("RectangleShape2D_6ykn5")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+offset_left = -19.0
+offset_top = -34.0
+offset_right = 19.0
+offset_bottom = -27.0
+theme_override_font_sizes/font_size = 15
+theme_override_styles/fill = SubResource("StyleBoxFlat_dguyl")
+show_percentage = false
