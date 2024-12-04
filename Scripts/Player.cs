@@ -3,156 +3,214 @@ using System;
 
 public partial class Player : CharacterBody2D
 {
-	[Export]
-	public int MaxHealth = 100;
+    [Export]
+    public int MaxHealth = 100;
+    private int currentHealth;
 
-	private int currentHealth;
+    [Export]
+    public int Damage = 10;
 
-	[Export]
-	public float Speed = 200.0f;
+    [Export]
+    public float Speed = 200.0f;
+    [Export]
+    public float JumpVelocity = -400.0f;
+    [Export]
+    public float KnockbackForce = 300.0f;
+    [Export]
+    public float KnockbackDuration = 0.2f;
 
-	[Export]
-	public float JumpVelocity = -400.0f;
+    private bool isKnockedBack = false;
+    private Timer knockbackTimer;
 
-	[Export]
-	public float KnockbackForce = 300.0f;
+    public AnimatedSprite2D animatedSprite2D;
+    public ProgressBar healthBar;
 
-	[Export]
-	public float KnockbackDuration = 0.2f; // Duración del empuje en segundos
+    private bool isDead = false;
+    private Timer hideHealthBarTimer;
 
-	private bool isKnockedBack = false; // Indica si el jugador está en knockback
-	private Timer knockbackTimer;
+    // Ataque
+    [Export]
+    public float AttackCooldown = 0.3f;  // Tiempo de recarga del ataque
+    private bool canAttack = true;
+    private Timer attackCooldownTimer;
 
-	public AnimatedSprite2D animatedSprite2D;
-	public ProgressBar healthBar;
+    private Area2D attackArea;
+    private bool isAttacking = false;
 
-	private bool isDead = false;
+    public override void _Ready()
+    {
+        currentHealth = MaxHealth;
+        healthBar = GetNode<ProgressBar>("ProgressBar");
+        healthBar.MaxValue = MaxHealth;
+        healthBar.Value = MaxHealth;
+        healthBar.Visible = false;
 
-	private Timer hideHealthBarTimer;
+        hideHealthBarTimer = new Timer();
+        hideHealthBarTimer.OneShot = true;
+        hideHealthBarTimer.Timeout += HideHealthBar;
+        AddChild(hideHealthBarTimer);
 
-	public override void _Ready()
-	{
-		currentHealth = MaxHealth;
-		healthBar = GetNode<ProgressBar>("ProgressBar");
-		healthBar.MaxValue = MaxHealth;
-		healthBar.Value = MaxHealth;
-		healthBar.Visible = false;
-		hideHealthBarTimer = new Timer();
-    	hideHealthBarTimer.OneShot = true;
-    	hideHealthBarTimer.Timeout += HideHealthBar;
-    	AddChild(hideHealthBarTimer);
+        knockbackTimer = new Timer();
+        AddChild(knockbackTimer);
+        knockbackTimer.OneShot = true;
+        knockbackTimer.Timeout += OnKnockbackEnd;
 
-		knockbackTimer = new Timer();
-		AddChild(knockbackTimer);
-		knockbackTimer.OneShot = true;
-		knockbackTimer.Timeout += OnKnockbackEnd;
-	}
+        attackCooldownTimer = new Timer();
+        AddChild(attackCooldownTimer);
+        attackCooldownTimer.OneShot = true;
+        attackCooldownTimer.Timeout += ResetAttackCooldown;
 
-	public void TakeDamage(int damage, Vector2 knockbackDirection)
-	{
-		currentHealth -= damage;
-		healthBar.Value = currentHealth;
-    	healthBar.Visible = true;
-		hideHealthBarTimer.Stop();
-    	hideHealthBarTimer.Start(2.0f);
+        attackArea = GetNode<Area2D>("AttackArea");
+    }
 
-		// Aplicar el empuje
-		isKnockedBack = true;
-		Velocity = knockbackDirection * KnockbackForce;
-		knockbackTimer.Start(KnockbackDuration);
+    public void TakeDamage(int damage, Vector2 knockbackDirection)
+    {
+        currentHealth -= damage;
+        healthBar.Value = currentHealth;
+        healthBar.Visible = true;
+        hideHealthBarTimer.Stop();
+        hideHealthBarTimer.Start(2.0f);
 
-		if (currentHealth <= 0)
-		{
-			Die();
-		}
-	}
+        isKnockedBack = true;
+        Velocity = knockbackDirection * KnockbackForce;
+        knockbackTimer.Start(KnockbackDuration);
 
-	private void Die()
-	{
-		isDead = true;
-		animatedSprite2D.Play("die");
-		GetTree().CreateTimer(2.0f).Timeout += () =>
-		{
-			GameManager.Instance.reset_money();
-			GetTree().ReloadCurrentScene();
-		};
-	}
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        isDead = true;
+        animatedSprite2D.Play("die");
+        GetTree().CreateTimer(2.0f).Timeout += () =>
+        {
+            GameManager.Instance.reset_money();
+            GetTree().ReloadCurrentScene();
+        };
+    }
+
+    private void OnKnockbackEnd()
+    {
+        isKnockedBack = false;
+    }
+
+    private void ResetAttackCooldown()
+    {
+        canAttack = true;
+    }
+
+    private void PerformAttack()
+    {
+        if (!canAttack || isDead) return;
+
+        isAttacking = true;
+        canAttack = false;
+        attackCooldownTimer.Start(AttackCooldown);
 
 
-	private void OnKnockbackEnd()
-	{
-		isKnockedBack = false;
-	}
+        animatedSprite2D.Play("attack");
 
-	public override void _PhysicsProcess(double delta)
-	{
-		if (isDead)
-		{
-			Velocity = Vector2.Zero;
-			return;
-		}
-		if (isKnockedBack)
-		{
-			Velocity += GetGravity() * (float)delta;
-			MoveAndSlide();
-			return;
-		}
+        var enemies = attackArea.GetOverlappingBodies();
+        GD.Print(enemies);
+        foreach (var enemy in enemies)
+        {
+            if (enemy is Enemy enemyInstance)
+            {
+                //Vector2 knockbackDirection = (enemy.GlobalPosition - GlobalPosition).Normalized();
+                enemyInstance.TakeDamage(Damage);
+            }
+        }
 
-		Vector2 velocity = Velocity;
-		animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+        GetTree().CreateTimer(0.4f).Timeout += () =>
+        {
+            isAttacking = false;
+        };
+    }
 
-		if (!IsOnFloor())
-		{
-			velocity += GetGravity() * (float)delta;
-		}
+    public override void _PhysicsProcess(double delta)
+    {
+        if (isDead)
+        {
+            Velocity = Vector2.Zero;
+            return;
+        }
 
-		if (Input.IsActionJustPressed("jump") && IsOnFloor())
-		{
-			velocity.Y = JumpVelocity;
-		}
+        if (isKnockedBack)
+        {
+            Velocity += GetGravity() * (float)delta;
+            MoveAndSlide();
+            return;
+        }
 
-		Vector2 direction = Input.GetVector("move_left", "move_right", "ui_up", "ui_down");
+        Vector2 velocity = Velocity;
+        animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 
-		if (direction[0] > 0)
-		{
-			animatedSprite2D.FlipH = false;
-		}
-		else if (direction[0] < 0)
-		{
-			animatedSprite2D.FlipH = true;
-		}
+        if (!IsOnFloor())
+        {
+            velocity += GetGravity() * (float)delta;
+        }
 
-		if (IsOnFloor())
-		{
-			if (direction[0] == 0)
-			{
-				animatedSprite2D.Play("idle");
-			}
-			else
-			{
-				animatedSprite2D.Play("run");
-			}
-		}
-		else
-		{
-			animatedSprite2D.Play("jump");
-		}
+        if (Input.IsActionJustPressed("jump") && IsOnFloor())
+        {
+            velocity.Y = JumpVelocity;
+        }
 
-		if (direction != Vector2.Zero)
-		{
-			velocity.X = direction.X * Speed;
-		}
-		else
-		{
-			velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
-		}
+        Vector2 direction = Input.GetVector("move_left", "move_right", "ui_up", "ui_down");
 
-		Velocity = velocity;
-		MoveAndSlide();
-	}
+        if (direction[0] > 0)
+        {
+            animatedSprite2D.FlipH = false;
+        }
+        else if (direction[0] < 0)
+        {
+            animatedSprite2D.FlipH = true;
+        }
 
-	private void HideHealthBar()
-	{
-		healthBar.Visible = false;
-	}
+        if (IsOnFloor())
+        {
+            if (!isAttacking)
+            {
+                if (direction[0] == 0)
+                {
+                    animatedSprite2D.Play("idle");
+
+                }
+                else
+                {
+                    animatedSprite2D.Play("run");
+                }
+            }
+
+        }
+        else
+        {
+            animatedSprite2D.Play("jump");
+        }
+
+        if (direction != Vector2.Zero)
+        {
+            velocity.X = direction.X * Speed;
+        }
+        else
+        {
+            velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
+        }
+
+        Velocity = velocity;
+        MoveAndSlide();
+
+        // Realizar ataque
+        if (Input.IsActionJustPressed("attack") && !isAttacking)
+        {
+            PerformAttack();
+        }
+    }
+
+    private void HideHealthBar()
+    {
+        healthBar.Visible = false;
+    }
 }

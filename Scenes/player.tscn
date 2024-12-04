@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=3 uid="uid://dmov5vfevd1w6"]
+[gd_scene load_steps=54 format=3 uid="uid://dmov5vfevd1w6"]
 
 [ext_resource type="Script" path="res://Scripts/Player.cs" id="1_ngy7s"]
 [ext_resource type="Texture2D" uid="uid://b45jc32ixt8ji" path="res://Character/Idle/Idle-Sheet.png" id="1_uwyos"]
@@ -346,6 +346,9 @@ corner_radius_top_right = 30
 corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_15xcp"]
+size = Vector2(80.375, 65.75)
+
 [node name="Player" type="CharacterBody2D"]
 z_index = 5
 collision_layer = 3
@@ -369,3 +372,9 @@ offset_bottom = -51.0
 theme_override_font_sizes/font_size = 15
 theme_override_styles/fill = SubResource("StyleBoxFlat_rqrhf")
 show_percentage = false
+
+[node name="AttackArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+position = Vector2(1, -28.125)
+shape = SubResource("RectangleShape2D_15xcp")

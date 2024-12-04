@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class Enemy : CharacterBody2D
+public partial class Enemy2 : CharacterBody2D
 {
     [Export]
     public int MaxHealth = 30;
@@ -32,7 +32,6 @@ public partial class Enemy : CharacterBody2D
 
     private bool _isDead = false;
 
-    private Vector2 _velocity; // Velocidad del enemigo
 
     public override void _Ready()
     {
@@ -59,64 +58,51 @@ public partial class Enemy : CharacterBody2D
         attackTimer.Timeout += () => canAttack = true; // Permite atacar nuevamente al terminar el tiempo
     }
 
-    public override void _PhysicsProcess(double delta)
+    public override void _Process(double delta)
     {
         if (_isDead)
         {
             _animatedSprite2D.Play("die");
-            return;
-        }
-
-        _animatedSprite2D.Play("run");
-
-        if (!IsOnFloor())
-        {
-            _velocity += GetGravity() * (float)delta;
         }
         else
         {
-            _velocity.Y = 0;
+            _animatedSprite2D.Play("run");
+            if (RayCastLeft.IsColliding())
+            {
+                var collider = RayCastLeft.GetCollider();
+                if (collider is Player player && canAttack)
+                {
+                    Vector2 knockbackDirection = (player.GlobalPosition - GlobalPosition).Normalized();
+                    player.TakeDamage(Damage, knockbackDirection);
+                    canAttack = false;
+                    attackTimer.Start(AttackCooldown);
+                }
+                else
+                {
+                    Direction = 1;
+                    Sprite.FlipH = true;
+                }
+            }
+
+            if (RayCastRight.IsColliding())
+            {
+                var collider = RayCastRight.GetCollider();
+                if (collider is Player player && canAttack)
+                {
+                    Vector2 knockbackDirection = (player.GlobalPosition - GlobalPosition).Normalized();
+                    player.TakeDamage(Damage, knockbackDirection);
+                    canAttack = false;
+                    attackTimer.Start(AttackCooldown);
+                }
+                else
+                {
+                    Direction = -1;
+                    Sprite.FlipH = false;
+                }
+            }
+            Position += new Vector2((float)(Direction * Speed * delta), 0);
         }
 
-        if (RayCastLeft.IsColliding())
-        {
-            var collider = RayCastLeft.GetCollider();
-            if (collider is Player player && canAttack)
-            {
-                Vector2 knockbackDirection = (player.GlobalPosition - GlobalPosition).Normalized();
-                player.TakeDamage(Damage, knockbackDirection);
-                canAttack = false;
-                attackTimer.Start(AttackCooldown);
-            }
-            else if(collider is not CharacterBody2D)
-            {
-                GD.Print(collider);
-                Direction = 1;
-                Sprite.FlipH = true;
-            }
-        }
-
-        if (RayCastRight.IsColliding())
-        {
-            var collider = RayCastRight.GetCollider();
-            if (collider is Player player && canAttack)
-            {
-                Vector2 knockbackDirection = (player.GlobalPosition - GlobalPosition).Normalized();
-                player.TakeDamage(Damage, knockbackDirection);
-                canAttack = false;
-                attackTimer.Start(AttackCooldown);
-            }
-            else if(collider is not CharacterBody2D)
-            {
-                Direction = -1;
-                Sprite.FlipH = false;
-            }
-        }
-
-        _velocity.X = Direction * Speed;
-        Velocity = _velocity;
-
-        MoveAndSlide();
     }
 
     public void TakeDamage(int damage)
@@ -130,9 +116,6 @@ public partial class Enemy : CharacterBody2D
         {
             Die();
         }
-    }
-    private void Attack(){
-        
     }
 
     private void Die()

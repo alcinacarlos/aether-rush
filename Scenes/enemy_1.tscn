@@ -1,7 +1,25 @@
-[gd_scene load_steps=9 format=3 uid="uid://dy324avvp6k0b"]
+[gd_scene load_steps=22 format=3 uid="uid://dy324avvp6k0b"]
 
 [ext_resource type="Script" path="res://Scripts/Enemy.cs" id="1_ipium"]
 [ext_resource type="Texture2D" uid="uid://b6u7lvc730qfy" path="res://Mob/Boar/Idle/Idle-Sheet-export-Back.png" id="1_q753j"]
+[ext_resource type="Texture2D" uid="uid://s1ieuvsa6fxe" path="res://Mob/Boar/Hit-Vanish/Hit-Sheet-Black.png" id="2_4oa4w"]
+[ext_resource type="Texture2D" uid="uid://bh23wm8hyxd6t" path="res://Mob/Boar/Walk/Walk-Base-SheetBlack.png" id="4_jvbo1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i4nsb"]
+atlas = ExtResource("2_4oa4w")
+region = Rect2(0, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pifyb"]
+atlas = ExtResource("2_4oa4w")
+region = Rect2(48, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_58ljq"]
+atlas = ExtResource("2_4oa4w")
+region = Rect2(96, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_58m4b"]
+atlas = ExtResource("2_4oa4w")
+region = Rect2(144, 0, 48, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lludw"]
 atlas = ExtResource("1_q753j")
@@ -19,8 +37,49 @@ region = Rect2(96, 0, 48, 32)
 atlas = ExtResource("1_q753j")
 region = Rect2(144, 0, 48, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_mb3fk"]
+atlas = ExtResource("4_jvbo1")
+region = Rect2(0, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j1wiu"]
+atlas = ExtResource("4_jvbo1")
+region = Rect2(48, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_35ngy"]
+atlas = ExtResource("4_jvbo1")
+region = Rect2(96, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nmc3r"]
+atlas = ExtResource("4_jvbo1")
+region = Rect2(144, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_myyq7"]
+atlas = ExtResource("4_jvbo1")
+region = Rect2(192, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5pj0m"]
+atlas = ExtResource("4_jvbo1")
+region = Rect2(240, 0, 48, 32)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_j3gr5"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i4nsb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pifyb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_58ljq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_58m4b")
+}],
+"loop": true,
+"name": &"die",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_lludw")
@@ -35,28 +94,69 @@ animations = [{
 "texture": SubResource("AtlasTexture_807v7")
 }],
 "loop": true,
-"name": &"default",
+"name": &"idle",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mb3fk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j1wiu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_35ngy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nmc3r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_myyq7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5pj0m")
+}],
+"loop": true,
+"name": &"run",
+"speed": 5.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6ykn5"]
 
-[node name="Enemy_1" type="Area2D"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dguyl"]
+bg_color = Color(1, 0, 0, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[node name="Enemy_1" type="CharacterBody2D"]
 script = ExtResource("1_ipium")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -16)
 sprite_frames = SubResource("SpriteFrames_j3gr5")
-autoplay = "default"
-frame_progress = 0.963345
+animation = &"run"
+autoplay = "run"
+frame_progress = 0.825583
 
 [node name="RayCastRight" type="RayCast2D" parent="."]
-position = Vector2(7, 3)
-target_position = Vector2(9, 0)
+position = Vector2(9, -7)
+target_position = Vector2(12, 0)
 
 [node name="RayCastLeft" type="RayCast2D" parent="."]
-position = Vector2(-11, 4)
+position = Vector2(-11, -7)
 target_position = Vector2(-11, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-1, 5)
+position = Vector2(-1, -11)
 shape = SubResource("RectangleShape2D_6ykn5")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+offset_left = -19.0
+offset_top = -34.0
+offset_right = 19.0
+offset_bottom = -27.0
+theme_override_font_sizes/font_size = 15
+theme_override_styles/fill = SubResource("StyleBoxFlat_dguyl")
+show_percentage = false
