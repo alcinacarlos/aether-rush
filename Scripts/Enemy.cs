@@ -16,13 +16,13 @@ public partial class Enemy : CharacterBody2D
     public int Direction = -1;
 
     [Export]
-    public float AttackCooldown = 0.3f; // Tiempo en segundos entre ataques
+    public float AttackCooldown = 0.5f;
 
     private RayCast2D RayCastLeft;
     private RayCast2D RayCastRight;
     private AnimatedSprite2D Sprite;
 
-    private bool canAttack = true; // Indica si el enemigo puede atacar
+    private bool canAttack = true;
     private Timer attackTimer;
 
     private ProgressBar _healthBar;
@@ -32,7 +32,7 @@ public partial class Enemy : CharacterBody2D
 
     private bool _isDead = false;
 
-    private Vector2 _velocity; // Velocidad del enemigo
+    private Vector2 _velocity;
 
     public override void _Ready()
     {
@@ -56,7 +56,7 @@ public partial class Enemy : CharacterBody2D
         attackTimer = new Timer();
         AddChild(attackTimer);
         attackTimer.OneShot = true;
-        attackTimer.Timeout += () => canAttack = true; // Permite atacar nuevamente al terminar el tiempo
+        attackTimer.Timeout += () => canAttack = true;
     }
 
     public override void _PhysicsProcess(double delta)
@@ -90,7 +90,6 @@ public partial class Enemy : CharacterBody2D
             }
             else if(collider is not CharacterBody2D)
             {
-                GD.Print(collider);
                 Direction = 1;
                 Sprite.FlipH = true;
             }

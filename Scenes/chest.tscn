@@ -115,5 +115,14 @@ position = Vector2(-1, -1)
 position = Vector2(0, -36)
 shape = SubResource("RectangleShape2D_2jx1q")
 
+[node name="Label" type="Label" parent="."]
+offset_left = -21.0
+offset_top = -51.0
+offset_right = 36.0
+offset_bottom = -35.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 10
+text = "E para abrir"
+
 [connection signal="body_entered" from="OpenArea" to="." method="_on_open_area_body_entered"]
 [connection signal="body_exited" from="OpenArea" to="." method="_on_open_area_body_exited"]

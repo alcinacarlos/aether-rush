@@ -4503,9 +4503,6 @@ limit_bottom = 130
 limit_smoothed = true
 position_smoothing_enabled = true
 
-[node name="PeloteOro" parent="." instance=ExtResource("4_wfa1a")]
-position = Vector2(190, -36)
-
 [node name="Killzone" parent="." instance=ExtResource("5_4v45q")]
 position = Vector2(-109, 171)
 
@@ -4564,6 +4561,9 @@ position = Vector2(653, -167)
 position = Vector2(604, -86)
 Dinero = 3
 
+[node name="PeloteOro" parent="Pelotes" instance=ExtResource("4_wfa1a")]
+position = Vector2(190, -36)
+
 [node name="Chest" parent="." instance=ExtResource("14_2fckb")]
 position = Vector2(1410, -193)
 
@@ -4609,9 +4609,6 @@ position = Vector2(645, -214)
 position = Vector2(557, -213)
 
 [node name="Enemies" type="Node" parent="."]
-
-[node name="Enemy_1" parent="Enemies" instance=ExtResource("6_o46ae")]
-position = Vector2(1665, -8)
 
 [node name="Enemy_3" parent="Enemies" instance=ExtResource("7_gobhh")]
 position = Vector2(1509, -10)

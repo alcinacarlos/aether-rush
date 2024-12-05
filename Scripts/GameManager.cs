@@ -23,7 +23,6 @@ public partial class GameManager : Node
     public void add_money(int money)
     {
         Money += money;
-        GD.Print(Money);
     }
     public void reset_money()
     {
