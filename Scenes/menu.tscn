@@ -76,6 +76,13 @@ theme_override_font_sizes/font_size = 35
 theme_override_styles/normal = SubResource("StyleBoxFlat_6mphb")
 text = "Exit"
 
+[node name="TextInput" type="LineEdit" parent="."]
+layout_mode = 0
+offset_left = 473.0
+offset_top = 122.0
+offset_right = 676.0
+offset_bottom = 194.0
+
 [connection signal="pressed" from="VBoxContainer/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="VBoxContainer/Options" to="." method="_on_options_pressed"]
 [connection signal="pressed" from="VBoxContainer/Exit" to="." method="_on_exit_pressed"]

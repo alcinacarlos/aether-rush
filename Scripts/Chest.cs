@@ -29,6 +29,8 @@ public partial class Chest : StaticBody2D
 		{
 			_animatedSprite.Play("open");
 			_isOpened = true;
+			GameManager.Instance.GameWon();
+			
 			GetTree().CreateTimer(1.5f).Timeout += () => {
 				GetTree().ChangeSceneToFile("res://Scenes/menu.tscn");
 			};
